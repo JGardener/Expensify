@@ -1,0 +1,13 @@
+// A configuration file for Babel
+// This is all JSON!
+
+{
+  "presets": [
+    "env", 
+    "react"
+  ],
+  "plugins": [
+    "transform-class-properties"
+  ] 
+}
+
