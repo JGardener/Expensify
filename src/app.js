@@ -1,49 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { BrowserRouter, Route, Switch, Link, NavLink } from 'react-router-dom';
+import AppRouter from './routers/AppRouter';
 
 import 'normalize.css/normalize.css'
 import './styles/styles.scss'
 
-// Checking out the syntax of React Router
 
-const ExpenseDashboardPage = () => (<div>ExpenseDashboardPage</div>);
-const AddExpensePage = () => (<div>AddExpensePage</div>);
-const EditExpensePage = () => (<div>EditExpensePage</div>);
-const HelpPage = () => (<div>HelpPage</div>);
-const NotFoundPage = () => (<div>404! - This page wasn't found! <Link to="/">Go home</Link></div>)
-
-const Header = () => (
-  <div>
-    <h1>Expensify</h1>
-    <NavLink to="/" activeClassName="is-active" exact="true">Dashboard</NavLink>
-    <br />
-    <NavLink to="/create" activeClassName="is-active">Create an Expense</NavLink>
-    <br />
-    <NavLink to="/edit" activeClassName="is-active">Edit an Expense</NavLink>
-    <br />
-    <NavLink to="/help" activeClassName="is-active">Help</NavLink>
-    <br />
-    <br />
-  </div>
-)
-
-const routes = (
-  <BrowserRouter>
-    <div>
-      <Header />
-      <Switch>
-        <Route path="/" component={ExpenseDashboardPage} exact={true} />
-        <Route path="/create" component={AddExpensePage} />
-        <Route path="/edit" component={EditExpensePage} />
-        <Route path="/help" component={HelpPage} />
-        <Route component={NotFoundPage} />
-      </Switch>
-    </div>
-  </BrowserRouter>
-);
-
-ReactDOM.render(routes, document.getElementById('app'));
+ReactDOM.render(<AppRouter />, document.getElementById('app'));
 
 /*
 In this current state, the server-side rendering is how we get our initial page.
@@ -99,5 +62,8 @@ What I've done: Commit 5: 13 Jul 21
   5b. Much like routes, we have to use the "exact" prop on NavLink because Dashboard matches every URL
   5c. NavLink replaces Link entirely when used for navigation, but the link in the 404 page doesn't need to be NavLink
 6. Profit!
+
+What I've done: Commit 6 13 Jul 21
+1. Moved each component into its own file and exported to AppRouterJS.
 
 */
