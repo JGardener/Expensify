@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <base href="/">
+  <!-- Line 4 was added due to an issue. This issue is outlined at the bottom of this doc. -->
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -12,3 +14,27 @@
   <script src="./bundle.js"></script>
 </body>
 </html>
+
+<!-- 
+
+  Line 4 adds a base tag. 
+  The <base> tag specifies the base URL and/or target for all relative URL's in a document. 
+  In this case, it is our entire React App, as everything runs from index.html
+  There can only be one base tag, and it sits inside the <head> element. 
+
+  So, why did this get added?
+
+  Simply put, in AppRouter.js, I altered:
+
+  path="/edit" 
+  to
+  path="/edit:id"
+
+  this means that dynamic URL's are now possible on the edit page. 
+  However, the app was unable to find any of them, 404 errors were returning. 
+  The reason the base tag fixes it is because without it, the app will try 
+  to use the defined path as the base url. In our case - path="/edit:id" - would be the 
+  base url, which is wrong! The base tag corrects this :)
+
+  
+ -->
