@@ -1,3 +1,5 @@
+// Object Destructing
+
 /*
 const person = {
     name: "James",
@@ -25,8 +27,7 @@ if(city && temperature){
     console.log(`It is ${temperature}C in ${city} today. This is destructured.`)
 }
 
-*/
- 
+
 const book = {
     title: 'Ego is the Enemy',
     author: "Ryan Holiday",
@@ -41,3 +42,32 @@ console.log(`${title} is the name of the book I'm reading. It's by ${author}!`);
 
 const {name: publisherName = "self-published"} = book.publisher;
 console.log(`The book is ${publisherName}`)
+*/
+
+/*
+Array Destructuring
+
+const address = ["Person House, Lycan Lane", "Lycania", "LY23 5N6"];
+console.log(`You're currently at ${address[1]} in ${address[2]}`)
+
+Sadly, this doesn't scale well. Let's destructure it. 
+
+
+const address = ["Person House, Lycan Lane", "Lycania", "LY23 5N6"];
+const [street, city, postcode] = address; 
+
+console.log(`You are in ${street} located within ${city}. The postcode is ${postcode}`)
+
+You are unable to use renaming of values, because you're using an array,
+but you can still provide default values if you wish
+
+*/
+
+const item = ["Coffee (hot)","$2.00", "$2.50", "$2.75"]
+
+// The challenge is to grab the first and third items using array destructuring
+const [itemName, , mediumPrice] = item; 
+
+console.log(`A medium ${itemName} costs ${mediumPrice}`);
+
+// Profit!
