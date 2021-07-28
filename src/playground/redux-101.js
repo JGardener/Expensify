@@ -1,11 +1,18 @@
 import { createStore } from "redux";
 
+const incrementCount = ({ incrementBy = 1} = {}) =>  ({type: 'INCREMENT', incrementBy});
+
+const decrementCount = ({decrementBy = 1} = {}) => ({type: "DECREMENT", decrementBy});
+
+const resetCount = (count = 0) => ({type: "RESET", count});
+
+const setCount = ({count = 1}) => ({type: "SET", count});
+
 const Store = createStore((state = {count : 0 }, action) => {
     switch(action.type) {
         case "INCREMENT": 
-        const incrementBy = typeof action.incrementBy === 'number' ? action.incrementBy : 1;
         return {
-            count: state.count + incrementBy
+            count: state.count + action.incrementBy
         }
         case "DECREMENT":
             const decrementBy = typeof action.decrementBy === 'number' ? action.decrementBy : 1
@@ -34,26 +41,31 @@ const unsubscribe = Store.subscribe(() => {
     console.log(Store.getState());
 })
 
-Store.dispatch({
+
+/* 
+Below are some actions.
+We will add some Action generators here!
+Action generators a re functions that return action objects. 
+The ones down below will get made in one place and we then have a function we can call 
+to generate the action objects!
+Testing will be done by making an "increment" action generator. 
+*/
+
+/* Store.dispatch({
     // It's a convention to use UPPERCASE here. Multi-words are separated by underscores
     type: 'INCREMENT',
-    incrementBy: 5
-});
+     incrementBy: 5
+ });
+ */
+
+Store.dispatch(incrementCount({incrementBy: 5}))
 
 
-Store.dispatch({
-        type: "RESET"
-})
+Store.dispatch(decrementCount({decrementBy: 10}));
+
+Store.dispatch(resetCount());
     
-Store.dispatch({
-    type: "DECREMENT",
-    decrementBy: 10
-})
-
-Store.dispatch({
-    type: 'SET',
-    count: 101
-})
+Store.dispatch(setCount({ count: 101 }));
         
 unsubscribe();
 /*
