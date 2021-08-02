@@ -1,57 +1,192 @@
 import { createStore, combineReducers } from "redux";
+import { v4 as uuidv4 } from "uuid";
 
-/* 
-
-Predicted actions from looking at the state object down below. 
-
-ADD_EXPENSE
-REMOVE_EXPENSE
-EDIT_EXPENSE
-SET_TEXT_FILTER
-SORT_BY_DATE
-SORT_BY_AMOUNT
-SET_START_DATE
-SET_END_DATE
-
-Expenses Reducer
-*/
-
-// Array of default state for expenses
-const expensesReducerDefaultState = [];
 
 // The reducer for expenses
 const expensesReducer = (state = expensesReducerDefaultState, action) => {
     switch (action.type){
+        case "ADD_EXPENSE": 
+            return [...state, action.expense];
+        case "REMOVE_EXPENSE": 
+        return state.filter(({id}) => id !== action.id
+        );
+        case "EDIT_EXPENSE": 
+        return state.map((expense) => {
+            if (expense.id === action.id){
+                return {
+                    ...expense,
+                    ...action.updates
+                }
+            } else {
+                return expense;
+            }
+        });
         default: 
         return state;
     }
 };
+
+// The reducer for filters 
+const filtersReducer = (state = filtersReducerDefaultState, action) => {
+    switch (action.type){
+        case "SET_TEXT_FILTER": 
+        return {
+            ...state, 
+            text: action.text
+        };    
+        case "SORT_BY_DATE": 
+        return {
+            ...state, 
+            sortBy: "date"
+        };
+        case "SORT_BY_AMOUNT": 
+        return {
+            ...state, 
+            sortBy: "amount"
+        };
+        case "SET_START_DATE":
+            return {
+                ...state,
+                startDate: action.startDate
+            };
+        case "SET_END_DATE":
+            return {
+                ...state,
+                endDate: action.endDate
+            }
+        default: 
+        return state;
+    }
+}
+/* 
+
+Predicted actions from looking at the state object down below. 
+
+*/
+
+// ADD_EXPENSE
+const addExpense = (
+    {description = '', 
+    note = '', 
+    amount = 0, 
+    createdAt = 0} = {}
+    ) => ({
+    type: "ADD_EXPENSE",
+    expense: {
+        id: uuidv4(),
+        description,
+        note, 
+        amount, 
+        createdAt
+    },
+})
+
+// REMOVE_EXPENSE
+const removeExpense = ({id} = {}) => ({
+    type: "REMOVE_EXPENSE", 
+    id    
+});
+
+// EDIT_EXPENSE
+const editExpense = (id, updates = {}) => ({
+    type: "EDIT_EXPENSE",
+    id, 
+    updates
+});
+
+// SET_TEXT_FILTER
+const setTextFilter = (text = '') => ({
+    type: "SET_TEXT_FILTER",
+    text
+});
+
+// SORT_BY_DATE
+const sortByDate = () => ({
+    type: "SORT_BY_DATE"    
+});
+
+// SORT_BY_AMOUNT
+const sortByAmount = () => ({
+    type: "SORT_BY_AMOUNT"    
+});
+
+// SET_START_DATE
+const setStartDate = (startDate) => ({
+    type: "SET_START_DATE",
+    startDate
+});
+
+// SET_END_DATE
+const setEndDate = (endDate) => ({
+    type: "SET_END_DATE",
+    endDate
+});
+
+
+// Array of default state for expenses
+const expensesReducerDefaultState = [];
+
 
 // Array of default state for filters 
 const filtersReducerDefaultState = {
     endDate: undefined,
     sortBy: "date",
     startDate: undefined,
-    text: ""
+    text: ''
 };
 
-// The reducer for filters 
-const filtersReducer = (state = filtersReducerDefaultState, action) => {
-    switch (action.type){
-        default: 
-        return state;
-    }
+// Timestamps (milliseconds from Jan 1 1970 (unix epoch))
+
+// Get visible expenses
+const getVisibleExpenses = (expenses, { text, sortBy, startDate, endDate }) => {
+    return expenses.filter((expense) => {
+        const startDateMatch = typeof startDate !== 'number' || expense.createdAt >= startDate;
+        const endDateMatch = typeof endDate !== 'number' || expense.createdAt <= endDate;
+        const textMatch = expense.description.toLowerCase().includes(text.toLowerCase());
+
+        return startDateMatch && endDateMatch && textMatch;
+    }).sort((a,b) => {
+        if(sortBy === "date"){
+            return a.createdAt < b.createdAt ? 1 : -1;
+        }
+        else if(sortBy === "amount"){
+            return a.amount < b.amount ? 1 : -1;
+        };
+    })
 }
 
-// The first argument of createStore is combineReducers, because we want a reducer for each root state object. const store = createStore(
-    const store = createStore(
-        combineReducers({
-            expenses: expensesReducer,
-            filters: filtersReducer
-        })
-    );
 
-console.log(store.getState());
+// The first argument of createStore is combineReducers, because we want a reducer for each root state object. const store = createStore(
+const store = createStore(
+    combineReducers({
+        expenses: expensesReducer,
+        filters: filtersReducer
+        })
+);
+
+store.subscribe(() => {
+    const state = store.getState();
+    const visibleExpenses = getVisibleExpenses(state.expenses, state.filters);
+    console.log(visibleExpenses);
+})
+
+const expenseOne = store.dispatch(addExpense({description: "Rent", amount: 100, createdAt: -21000}));
+const expenseTwo = store.dispatch(addExpense({description: "Coffee", amount: 300, createdAt: 1000}));
+
+
+// store.dispatch(editExpense(expenseTwo.expense.id, { amount: 500 } ));
+// store.dispatch(setTextFilter('re'));
+// store.dispatch(setTextFilter());
+
+store.dispatch(sortByAmount());
+// store.dispatch(sortByDate());
+
+// store.dispatch(setStartDate(0));
+// store.dispatch(setEndDate(130));
+// store.dispatch(setStartDate());
+// store.dispatch(setEndDate(999));4
+
+
 
 const demoState = {
     expenses: [{
@@ -68,3 +203,28 @@ const demoState = {
         endDate: undefined
     }
 };
+
+/*
+const user = {
+    name: "Jen",
+    age: 24
+}
+
+
+console.log({
+    ...user,
+    location: "United Kingdom",
+    age: 27,
+    // age is included in the original object. If I put it after the spread, then the original is overwritten
+    // if I put it before the spread, then the spread will overwrite my manual insertion here
+})
+*/
+
+
+/*
+File Summary: 
+Redux is complicated, there's an awful lot to it and it took a lot of time to get this file completed. 
+I can see how it is essential to React applications that scale. It helps with sharing data. 
+Now, the fun part begins; integrating this with the Expensify app. 
+
+*/
