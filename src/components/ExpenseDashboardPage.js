@@ -1,9 +1,9 @@
 import React from 'react';
-import ConnectedExpenseList from './ExpenseList';
+import ExpenseList from './ExpenseList';
 
 const ExpenseDashboardPage = () => (
   <div>
-    <ConnectedExpenseList />
+    <ExpenseList />
     </div>  
 );
 
