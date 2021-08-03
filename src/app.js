@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { Provider } from 'react-redux';
 import AppRouter from './routers/AppRouter';
 import configureStore from './store/configureStore';
 import { addExpense, removeExpense, editExpense } from './actions/expenses';
@@ -22,7 +23,20 @@ store.dispatch(addExpense({description: "Gas Bill"}));
 store.dispatch(setTextFilter("water"));
 
 
-ReactDOM.render(<AppRouter />, document.getElementById('app'));
+setTimeout(() => {
+  store.dispatch(setTextFilter('rent'))
+}, 3000)
+
+
+const jsx = (
+  <div>
+   <Provider store={store}>
+     <AppRouter />
+   </Provider>
+  </div>
+)
+
+ReactDOM.render(jsx, document.getElementById('app'));
 
 /*
 In this current state, the server-side rendering is how we get our initial page.
