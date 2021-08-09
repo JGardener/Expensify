@@ -1,8 +1,10 @@
+import moment from "moment";
+
 // Array of default state for filters 
 const filtersReducerDefaultState = {
-    endDate: undefined,
+    endDate: moment().endOf('month'),
     sortBy: "date",
-    startDate: undefined,
+    startDate: moment().startOf('month'),
     text: ''
 };
 
