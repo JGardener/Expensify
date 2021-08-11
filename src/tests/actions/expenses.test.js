@@ -1,5 +1,3 @@
-import { expect } from '@jest/globals'
-import { extractExpectedAssertionsErrors } from 'expect';
 import {addExpense, editExpense, removeExpense} from '../../actions/expenses'
 
 test("Should setup removeExpense action object", () => {
