@@ -10,7 +10,7 @@
     "serve": "live-server public/",
     "build": "webpack",
     "build:prod": "webpack -p",
-    "dev-server": "webpack-dev-server",
+    "dev-server": "webpack serve",
     "pre-deploy": " npm run build",
     "deploy": "gh-pages -d public",
     "test": "jest"
@@ -46,6 +46,7 @@
   "devDependencies": {
     "@babel/cli": "^7.14.8",
     "@babel/core": "^7.15.0",
-    "@babel/preset-env": "^7.15.0"
+    "@babel/preset-env": "^7.15.0",
+    "webpack-cli": "^4.7.2"
   }
 }

@@ -5,6 +5,7 @@ const path = require('path');
 module.exports = {
   // Entry to the app. 
   entry: './src/app.js',
+  mode: "development",
   // Output the final bundled file
   output: {
     path: path.join(__dirname, 'public'),
@@ -16,7 +17,7 @@ module.exports = {
      loader: 'babel-loader',
      // test checks whether a file ends in .js or not. $ checks the end.
      test: /\.js$/,
-     exclude: /node_modules/
+     exclude: [/node_modules/]
     },
     {
       // The ? in here means the s is optional. So we can support scss and css files
@@ -29,7 +30,7 @@ module.exports = {
     }
   ]
   },
-  devtool: 'cheap-module-eval-source-map',
+  devtool: 'eval-cheap-module-source-map',
   devServer: {
     contentBase: path.join(__dirname, 'public'),
     historyApiFallback: true
