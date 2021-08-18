@@ -1,33 +1,9 @@
 import getVisibleExpenses from '../../selectors/expenses';
 import moment from 'moment';
 import { expect } from '@jest/globals';
+// Test Date from fixtures folder
+import expenses from '../fixtures/expenses';
 
-// Test Data
-const expenses = [
-    {
-    id: "1",
-    description: "Gum",
-    note: "",
-    amount: 195,
-    createdAt: 0
-    },
-    {
-    id: "2",
-    description: "Rent",
-    note: "",
-    amount: 109500,
-    // This is 4 days in the past. 
-    createdAt: moment(0).subtract(4, "days").valueOf()
-    },
-    {
-    id: "3",
-    description: "Credit Card",
-    note: "",
-    amount: 4500,
-    // 4 days in the future.
-    createdAt: moment(0).add(4, "days").valueOf()
-    },
-]
 
 test('Should filter a text by value', () => {
     // Test filter for filtering the expenses array
