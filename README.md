@@ -4,10 +4,15 @@
 
 - Babel
 - CSS Loader
+- Enzyme
 - Github Pages
+- Jest
 - Node Sass
 - Normalize CSS
-- React, DOM, Modal and Router
+- React
+- ReactDOM, 
+- React Modal 
+- React Router
 - Redux
 - Sass Loader
 - Webpack & Webpack Dev Server
